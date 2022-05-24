@@ -21,7 +21,6 @@ public class BoardApplication {
 	/**
 	 * Redirect all traffic from port 8080 to 8443
 	 * @return
-	 *
 	 */
 	@Bean
 	public ServletWebServerFactory servletContainer(){
