@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="partials/config :: head"></head>
+
+<body>
+<div class="container-scroller">
+  <!-- partial:/partials/_navbar.html -->
+  <nav th:replace="partials/nav :: nav"></nav>
+  <!-- partial -->
+  <div class="container-fluid page-body-wrapper">
+    <!-- partial:/partials/_settings-panel.html -->
+    <div th:replace="partials/config :: settings-panel"></div>
+    <div th:replace="partials/config :: right-sidebar"></div>
+    <!-- partial -->
+    <!-- partial:/partials/_sidebar.html -->
+    <nav th:replace="partials/sidebar :: sidebar"></nav>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-10 card-title">카테고리 목록</div>
+                  <div class="col-2">
+                    <button type="button" class="float-right btn btn-inverse-primary btn-fw">글 작성</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="table-responsive">
+                    <div id="table"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+      <div th:replace="partials/footer :: footer"></div>
+    </div>
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+
+<div th:replace="partials/plugins :: plugins" style="display: none;"></div>
+<!-- Custom js for this page-->
+<!-- End custom js for this page-->
+
+</body>
+</html>

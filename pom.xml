@@ -55,6 +55,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- devtools-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- devtools-->
+
 		<!--jstl-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
