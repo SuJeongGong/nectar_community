@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-    테스트!
+test.do로 접근
 </body>
 </html>

@@ -23,20 +23,72 @@ class CustomTextEditor {
     }
 }
 
+class CheckboxRenderer {
+    constructor(props) {
+        const { grid, rowKey } = props;
+
+        const label = document.createElement('label');
+        label.className = 'checkbox tui-grid-row-header-checkbox';
+        label.setAttribute('for', String(rowKey));
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.className = 'hidden-input';
+        hiddenInput.id = String(rowKey);
+
+        const customInput = document.createElement('span');
+        customInput.className = 'custom-input';
+
+        label.appendChild(hiddenInput);
+        label.appendChild(customInput);
+
+        hiddenInput.type = 'checkbox';
+        label.addEventListener('click', (ev) => {
+            ev.preventDefault();
+
+            if (ev.shiftKey) {
+                grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
+                return;
+            }
+
+            grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
+        });
+
+        this.el = label;
+
+        this.render(props);
+    }
+
+    getElement() {
+        return this.el;
+    }
+
+    render(props) {
+        const hiddenInput = this.el.querySelector('.hidden-input');
+        const checked = Boolean(props.value);
+
+        hiddenInput.checked = checked;
+    }
+}
+
 const grid = new tui.Grid({
     el: document.getElementById('table'),
     scrollX: false,
     scrollY: false,
-    columns: [
-        {
-            header: '번호',
-            name: 'no'
+    rowHeaders: [
+        { type: 'checkbox',
+            renderer: {
+                type: CheckboxRenderer
+            }
         },
+        { type: 'rowNum', width: 100, align: 'right'},
+    ],
+    columns: [
         {
             header: '카테고리',
             name: 'category',
+            width: 300,
             editor: {
-                type: CustomTextEditor,
+                type: 'text',
                 options: {
                     maxLength: 10
                 }
@@ -55,6 +107,7 @@ const grid = new tui.Grid({
         {
             header: '익명',
             name: 'anonymous',
+            width: 200,
             formatter: 'listItemText',
             editor: {
                 type: 'select',
@@ -64,14 +117,12 @@ const grid = new tui.Grid({
                         { text: '실명', value: false }
                     ]
                 }
-            },
-            copyOptions: {
-                useListItemText: true // when this option is used, the copy value is concatenated text
             }
         },
         {
             header: '마지막 수정',
-            name: 'last_update'
+            name: 'last_update',
+            width: 200,
         }
     ]
 });
@@ -96,7 +147,7 @@ const gridData = [
         last_update: '2022-05-12',
     },
     {
-        no: 1,
+        no: 2,
         category: 'thanks card',
         explanation: '감사인사를 전하는 게시판입니다',
         anonymous: false,
