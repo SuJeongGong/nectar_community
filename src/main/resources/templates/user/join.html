@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="partials/config :: head"></head>
+
+<body>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                        <div class="brand-logo">
+                            <img src="/template/images/logo.svg" alt="logo">
+                        </div>
+                        <h4>회원가입</h4>
+                        <h6 class="font-weight-light">
+                            <div class="badge  badge-warning">필수</div>
+                            표시 되어있는건 필수 정보입니다.
+                        </h6>
+                        <form class="pt-3">
+                            <div class="form-group">
+                                <label for="id">
+                                    <div class="badge  badge-warning">필수</div>
+                                    아이디</label>
+                                <input type="text" class="form-control form-control-lg" id="id" placeholder="아이디">
+                            </div>
+                            <div class="form-group">
+                                <label for="pw">
+                                    <div class="badge  badge-warning">필수</div>
+                                    비밀번호</label>
+                                <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwCheck">
+                                    <div class="badge  badge-warning">필수</div>
+                                    비밀번호 확인</label>
+                                <input type="text" class="form-control form-control-lg" id="pwCheck"
+                                       placeholder="비밀번호 확인">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">이름</label>
+                                <input type="text" class="form-control form-control-lg" id="name" placeholder="이름">
+                            </div>
+                            <div class="form-group">
+                                <label for="nickname">
+                                    <div class="badge  badge-warning">필수</div>
+                                    닉네임</label>
+                                <input type="text" class="form-control form-control-lg" id="nickname" placeholder="닉네임">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">
+                                    <div class="badge  badge-warning">필수</div>
+                                    이메일</label>
+                                <input type="email" class="form-control form-control-lg" id="email" placeholder="이메일">
+                            </div>
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input">
+                                        개인정보 활용에 동의 합니다.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                   href="/join.do">회원가입</button>
+                            </div>
+                            <div class="text-center mt-4 font-weight-light">
+                                이미 계정이 있다면? <a href="/login.do" class="text-primary">로그인 하러가기</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+
+<div th:replace="partials/plugins :: plugins" style="display: none;"></div>
+<!-- Custom js for this page-->
+<script type="text/javascript">
+    /**
+     * 아이디 중복체크
+     */
+    document.getElementById("id").addEventListener('keyup', function () {
+        const userId = document.getElementById("id").value;
+        if (userId.length > 1) {
+            fetch('/join/check/id/' + userId)
+                .then((response) => {
+                    if (!response.ok) {
+                        console.log("response.status 오류");
+                        throw new Error("Failed with HTTP code " + response.status);
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+
+                    if (!!document.getElementById("resId")) {
+                        document.getElementById("resId").remove();
+                    }
+                    const resultTag = document.createElement('p');
+                    if (result) {
+                        resultTag.textContent = '사용할 수 있는 아이디 입니다.';
+                        resultTag.classList.add("text-success");
+                    } else {
+                        resultTag.textContent = '사용할 수 없는 아이디 입니다.';
+                        resultTag.classList.add("text-danger");
+                    }
+                    resultTag.id = "resId";
+                    document.getElementById("id").parentElement.appendChild(resultTag);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }else{
+            if (!!document.getElementById("resId")) {
+                document.getElementById("resId").remove();
+            }
+        }
+    });
+    /**
+     * 이메일 중복체크
+     */
+    document.getElementById("email").addEventListener('keyup', function () {
+        const userEmail = document.getElementById("email").value;
+        //정규식
+        const emailReg = /.+@[a-zA-Z]+(\.[a-zA-Z]+){1,2}/g;
+
+        if (emailReg.test(userEmail)) {
+            fetch('/join/check/email/' + userEmail)
+                .then((response) => {
+                    if (!response.ok) {
+                        console.log("response.status 오류");
+                        throw new Error("Failed with HTTP code " + response.status);
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+
+                    if (!!document.getElementById("resEmail")) {
+                        document.getElementById("resEmail").remove();
+                    }
+                    const resultTag = document.createElement('p');
+                    if (result) {
+                        resultTag.textContent = '사용할 수 있는 이메일 입니다.';
+                        resultTag.classList.add("text-success");
+                    } else {
+                        resultTag.textContent = '사용할 수 없는 이메일 입니다.';
+                        resultTag.classList.add("text-danger");
+                    }
+                    resultTag.id = "resEmail";
+                    document.getElementById("email").parentElement.appendChild(resultTag);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }else{
+            if (!!document.getElementById("resEmail")) {
+                document.getElementById("resEmail").remove();
+            }
+        }
+    });
+    /**
+     * 비밀번호 체크
+     */
+    document.getElementById("pwCheck").addEventListener('keyup', function () {
+
+    });
+
+</script>
+<!-- End custom js for this page-->
+
+</body>
+
+</html>
