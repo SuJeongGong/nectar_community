@@ -1,13 +1,16 @@
 package kr.co.nectarsoft.community.user.controller;
 
 import kr.co.nectarsoft.community.user.service.JoinService;
+import kr.co.nectarsoft.community.user.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * packageName    : kr.co.nectarsoft.community.user
@@ -47,8 +50,23 @@ public class JoinController {
      * @return string
      */
     @PostMapping("form.do")
-    public String join(){
-        return "";
+    public ResponseEntity<Map<String,Object>> join(User user){
+        Map<String, Object> result = new HashMap<>();
+        
+        // 비밀번호 확인
+        String pwReg = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
+        if (Pattern.matches(pwReg, user.getPw())) {
+            result.put("error", "비밀번호가 조건에 맞지 않습니다.");
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+        
+        //미인증 유저 테이블에 추가
+
+        
+        //이메일 인증 요청 보내기
+
+        //이메일 인증 코드 입력 화면으로 redirect
+
     }
 
     /**

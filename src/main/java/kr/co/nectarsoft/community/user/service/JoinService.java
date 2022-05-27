@@ -1,5 +1,7 @@
 package kr.co.nectarsoft.community.user.service;
 
+import kr.co.nectarsoft.community.user.vo.User;
+
 /**
  * packageName    : kr.co.nectarsoft.community.user.service
  * fileName       : JoinService
@@ -19,6 +21,7 @@ public interface JoinService {
      * date : 2022.05.27
      * description : 아이디 존재하는지 확인하기
      *
+     * @param id
      * @return boolean
      */
     public boolean checkId(String id);
@@ -29,7 +32,16 @@ public interface JoinService {
      * date : 2022.05.27
      * description : 이메일 존재하는지 확인하기
      *
+     * @param email
      * @return boolean
      */
     public boolean checkEmail(String email);
+
+    /**
+     * methodName : addUnAuthUser
+     * author : Gong SuJeong
+     * date : 2022.05.27
+     * description : 미인증 유저 추가하기
+     */
+    public void addUnAuthUser(User user);
 }

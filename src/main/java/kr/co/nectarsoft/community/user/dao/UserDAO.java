@@ -1,7 +1,7 @@
 package kr.co.nectarsoft.community.user.dao;
 
+import kr.co.nectarsoft.community.user.vo.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 /**
  * packageName    : kr.co.nectarsoft.community.user.dao
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 public interface UserDAO {
-    public int countUserById(String id);
-    public int countUserByEmail(String email);
+    int selectCountUserById(String id);
+    int selectCountUserByEmail(String email);
+    int insertUnAuthUser(User user);
 }

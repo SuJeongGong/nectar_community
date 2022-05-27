@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.nectarsoft.community.user.dao.UserDAO">
-    <select id="countUserById" parameterType="String" resultType="int">
+    <select id="selectCountUserById" parameterType="String" resultType="int">
         select  count(*)
         from    "USER"
         where   id = #{id}
     </select>
 
-    <select id="countUserByEmail" parameterType="String" resultType="int">
+    <select id="selectCountUserByEmail" parameterType="String" resultType="int">
         select  count(*)
         from    "USER"
         where   Email = #{email}
     </select>
+
+    <insert id="insertUnAuthUser" parameterType="map">
+        insert into unauth_user(
+            id,
+            pw,
+            auth,
+            "name",
+            phone,
+            nickname,
+            email,
+            last_logined,
+            delete_at
+        )values (
+            #{id},
+            #{pw},
+            #{user},
+            #{name},
+            #{phone},
+            #{nickname},
+            #{email},
+            #{lastLoginDate},
+            'F'
+         )
+
+    </insert>
 </mapper>
