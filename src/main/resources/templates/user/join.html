@@ -164,12 +164,59 @@
             }
         }
     });
-    /**
-     * 비밀번호 체크
-     */
-    document.getElementById("pwCheck").addEventListener('keyup', function () {
 
+    /**
+     * 비밀번호 조건 체크
+     */
+    document.getElementById("pw").addEventListener('keyup', function(){
+        checkPw()
     });
+
+    /**
+     * 비밀번호와 비밀번호 확인 체크
+     */
+    document.getElementById("pwCheck").addEventListener('keyup',function(){
+        checkPw()
+    });
+
+    function checkPw(){
+
+        const pw = document.getElementById("pw").value;
+        const pwCheck = document.getElementById("pwCheck").value;
+        const pwReg = /(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}/g;
+
+        if (!!document.getElementById("resPw")) {
+            document.getElementById("resPw").remove();
+        }
+        if(pw.length > 1){
+            const resultPwTag = document.createElement('p');
+            if(pwReg.test(pw)){
+                resultPwTag.textContent = '사용할 수 있는 비밀번호 입니다.';
+                resultPwTag.classList.add("text-success");
+            }else{
+                resultPwTag.textContent = '사용할 수 없는 비밀번호 입니다.';
+                resultPwTag.classList.add("text-danger");
+            }
+            resultPwTag.id = "resPw";
+            document.getElementById("pw").parentElement.appendChild(resultPwTag);
+        }
+
+        if (!!document.getElementById("resPwCheck")) {
+            document.getElementById("resPwCheck").remove();
+        }
+        if(pwCheck.length > 1){
+            const resultPwCheckTag = document.createElement('p');
+            if(pw===pwCheck){
+                resultPwCheckTag.textContent = '비밀번호와 값이 같습니다.';
+                resultPwCheckTag.classList.add("text-success");
+            }else{
+                resultPwCheckTag.textContent = '비밀번호와 값이 다릅니다.';
+                resultPwCheckTag.classList.add("text-danger");
+            }
+            resultPwCheckTag.id = "resPwCheck";
+            document.getElementById("pwCheck").parentElement.appendChild(resultPwCheckTag);
+        }
+    }
 
 </script>
 <!-- End custom js for this page-->
