@@ -67,6 +67,7 @@ public class JoinController {
 
         //이메일 인증 코드 입력 화면으로 redirect
 
+        return null;
     }
 
     /**
