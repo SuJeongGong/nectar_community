@@ -1,4 +1,4 @@
-package kr.co.nectarsoft.community.common;
+package kr.co.nectarsoft.community.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

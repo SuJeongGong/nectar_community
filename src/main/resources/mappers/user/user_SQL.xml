@@ -13,8 +13,8 @@
         where   Email = #{email}
     </select>
 
-    <insert id="insertUnAuthUser" parameterType="map">
-        insert into unauth_user(
+    <insert id="insertUser" parameterType="map">
+        insert into user(
             id,
             pw,
             auth,
@@ -35,6 +35,5 @@
             #{lastLoginDate},
             'F'
          )
-
     </insert>
 </mapper>

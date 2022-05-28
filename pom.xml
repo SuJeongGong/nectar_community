@@ -89,6 +89,14 @@
 		</dependency>
 		<!-- /thymeleaf-->
 
+		<!--email 인증-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!--email 인증-->
+
+
 	</dependencies>
 
 	<build>
