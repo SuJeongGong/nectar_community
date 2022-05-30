@@ -31,5 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/account.properties
+/src/main/resources/db.properties
 /src/main/resources/email.properties

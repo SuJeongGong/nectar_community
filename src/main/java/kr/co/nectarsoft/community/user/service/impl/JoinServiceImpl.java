@@ -7,6 +7,8 @@ import kr.co.nectarsoft.community.user.dao.UserDAO;
 import kr.co.nectarsoft.community.user.service.JoinService;
 import kr.co.nectarsoft.community.user.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -36,6 +38,7 @@ public class JoinServiceImpl implements JoinService {
     private SHA256 sha256;
     @Autowired
     private MailUtils sendMail;
+    @Value("${send.mail.address}") String sendMailAddress;
 
 
 
@@ -67,7 +70,7 @@ public class JoinServiceImpl implements JoinService {
                         "\n아래 [인증 코드]를 원래 페이지에 입력해주세요."+
                         "\n인증코드 : " + randomNum + 
                         "\n만약 본인이 회원가입한게 아니라면 무시하셔도 됩니다.");
-        sendMail.setFrom("brightelf9@naver.com");       // 변경해야함
+        sendMail.setFrom("0_sujeong@naver.com");       // 변경할 수 없으려나?!
         sendMail.setTo(user.getEmail());
         sendMail.send();
 

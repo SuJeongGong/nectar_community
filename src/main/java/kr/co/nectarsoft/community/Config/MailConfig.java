@@ -19,6 +19,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * 2022-05-30        GongSuJeong       최초 생성
  */
 @Configuration
+@PropertySource("classpath:email.properties")
 public class MailConfig {
     @Value("${spring.mail.host}") private String host;
     @Value("${spring.mail.username}") private String id;
