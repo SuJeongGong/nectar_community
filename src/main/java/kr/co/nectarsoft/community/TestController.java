@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * fileName       : TestController
  * author         : GongSuJeong
  * date           : 2022-05-26
- * description    :
+ * description    : 과제 테스트용 컨트롤러 삭제해도 무방
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------

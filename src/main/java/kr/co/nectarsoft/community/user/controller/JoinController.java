@@ -75,13 +75,11 @@ public class JoinController {
         String randomNum = newRandomNumber();
         Map<String, Object> emailRes;
         try {
-            emailRes = joinService.sendEmail(randomNum, user);
-            if ("OK".equals(emailRes.get("result"))) {
-                //세션에 인증번호 넣기
-                session.setAttribute("emailKey", randomNum);
-                session.setAttribute("emailKey", randomNum); // 변경해야함 , 비밀번호 암호화 필요
-                return "/user/authentication";
-            }
+            joinService.sendEmail(randomNum, user);
+            //세션에 인증번호 넣기
+            session.setAttribute("emailKey", randomNum);
+            session.setAttribute("emailKey", randomNum); // 변경해야함 , 비밀번호 암호화 필요
+            return "/user/authentication";
         } catch (MessagingException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {

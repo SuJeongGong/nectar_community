@@ -34,6 +34,8 @@ public class JoinServiceImpl implements JoinService {
     private UserDAO userDAO;
     @Autowired
     private SHA256 sha256;
+    @Autowired
+    private MailUtils sendMail;
 
 
 
@@ -56,23 +58,20 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public Map<String, Object> sendEmail(String randomNum, User user) throws MessagingException, UnsupportedEncodingException {
-        Map<String, Object> result = new HashMap<>();
-        MailUtils sendMail = new MailUtils();
-        sendMail.setSubject("[NECTARSOFT] 커뮤니티 이메일 인증메일 입니다."); //메일제목
+    public void sendEmail(String randomNum, User user) throws MessagingException, UnsupportedEncodingException {
 
+        sendMail.setSubject("[NECTARSOFT] 커뮤니티 이메일 인증메일 입니다.\n"); //메일제목
         sendMail.setText(
-                "<h1>메일인증</h1>" +
-                        "<br/>"+user.getName()+"님 "+
-                        "<br/>[NECTARSOFT] 커뮤니티에 회원가입해주셔서 감사합니다."+
-                        "<br/>아래 [인증 코드]를 원래 페이지에 입력해주세요."+
-                        "<br/>인증코드[" + randomNum + "]");
+                "[회원가입 메일인증]" +
+                        "\n"+user.getName()+"님  [NECTARSOFT] 커뮤니티에 회원가입해주셔서 감사합니다."+
+                        "\n아래 [인증 코드]를 원래 페이지에 입력해주세요."+
+                        "\n인증코드 : " + randomNum + 
+                        "\n만약 본인이 회원가입한게 아니라면 무시하셔도 됩니다.");
         sendMail.setFrom("brightelf9@naver.com");       // 변경해야함
         sendMail.setTo(user.getEmail());
         sendMail.send();
-        result.put("result","OK");
 
-        return result;
+        return;
     }
 
     @Override

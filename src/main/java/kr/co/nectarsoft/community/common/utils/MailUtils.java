@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -21,9 +22,16 @@ import java.io.UnsupportedEncodingException;
  * ----------------------------------------------------------------
  * 2022-05-27       SuJeong Gong        최초작성
  */
+@Component
 public class MailUtils {
-    @Value("${spring.mail}")
-    private JavaMailSender mailSender;//메일 sender
+
+    private static JavaMailSender mailSender;//메일 sender
+
+    @Autowired
+    public MailUtils(JavaMailSender mailSender){
+        this.mailSender = mailSender;
+    }
+
     private SimpleMailMessage message = new SimpleMailMessage();//메일 내용
 
 

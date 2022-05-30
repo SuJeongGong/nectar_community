@@ -61,11 +61,10 @@ public interface JoinService {
      *
      * @param randomNum 인증 번호
      * @param user   전송할 대상
-     * @return map 전송 결과 ( 결과값과 에러시는 에러 메세지)
      * @throws MessagingException           the messaging exception
      * @throws UnsupportedEncodingException the unsupported encoding exception
      */
-    public Map<String, Object> sendEmail(String randomNum, User user) throws MessagingException, UnsupportedEncodingException;
+    public void sendEmail(String randomNum, User user) throws MessagingException, UnsupportedEncodingException;
 
     /**
      * description : 비밀번호 확인 후 암호화
