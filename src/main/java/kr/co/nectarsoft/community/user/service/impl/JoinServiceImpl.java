@@ -53,10 +53,10 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public void addUnAuthUser(User user) {
+    public void addUser(User user) {
         user.setLastLoginDate(DateUtils.getNow("dateTime"));
         user.setAuth("USER");
-        userDAO.insertUnAuthUser(user);
+        userDAO.insertUser(user);
         return;
     }
 

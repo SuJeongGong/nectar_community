@@ -19,5 +19,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserDAO {
     int selectCountUserById(String id);
     int selectCountUserByEmail(String email);
-    int insertUnAuthUser(User user);
+    int insertUser(User user);
 }

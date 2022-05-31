@@ -50,7 +50,7 @@ public interface JoinService {
      *
      * @param user the user
      */
-    public void addUnAuthUser(User user);
+    public void addUser(User user);
 
 
     /**

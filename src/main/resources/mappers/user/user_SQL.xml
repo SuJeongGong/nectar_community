@@ -14,11 +14,11 @@
     </select>
 
     <insert id="insertUser" parameterType="map">
-        insert into user(
+        insert into "USER"(
             id,
             pw,
             auth,
-            "name",
+            name,
             phone,
             nickname,
             email,
@@ -27,7 +27,7 @@
         )values (
             #{id},
             #{pw},
-            #{user},
+            'USER',
             #{name},
             #{phone},
             #{nickname},

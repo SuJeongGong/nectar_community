@@ -16,14 +16,13 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
+ * description    : 회원가입 컨트롤러
  * packageName    : kr.co.nectarsoft.community.user
  * fileName       : JoinController
  * author         : GongSuJeong
  * date           : 2022-05-26
- * description    : 회원가입 컨트롤러
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
@@ -79,30 +78,14 @@ public class JoinController {
             joinService.sendEmail(randomNum, user);
             //세션에 인증번호 넣기
             session.setAttribute("emailKey", randomNum);
-            session.setAttribute("emailKey", randomNum); // 변경해야함 , 비밀번호 암호화 필요
-            return "/user/authentication";
+            session.setAttribute("user",user); // 변경해야함 , 비밀번호 암호화 필요
+            return "redirect:/join/authentication.do";
         } catch (MessagingException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return sendAlertPage("오류가 발생했습니다.",model, request);
-    }
-
-    //랜덤 인증번호 생성
-    private String newRandomNumber() {
-        String randomNum = "";
-        for (int i = 0; i < 4; i++) {
-            randomNum += String.valueOf((Math.random() * 10000) % 10);
-        }
-        return randomNum;
-    }
-
-    //alert page로 이동하는 메서드 만들기
-    private String sendAlertPage( String message,Model model, HttpServletRequest request) {
-        model.addAttribute("message", message);
-        model.addAttribute("redirectURL", request.getRequestURI());
-        return "/common/alertPage";
     }
 
     /**
@@ -124,6 +107,48 @@ public class JoinController {
         }else{
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * description : 인증번호 입력하는 페이지 연결
+     * methodName : authentication
+     * author : Gong SuJeong
+     * date : 2022.05.31
+     *
+     * @return string
+     */
+    @GetMapping("/authentication.do")
+    public String authentication(){
+        return "/user/authentication";
+    }
+
+    @PostMapping("/authentication.do")
+    public String authenticationCheck(HttpSession session, @RequestParam("emailKey") String userKey){
+        String emailKey = String.valueOf(session.getAttribute("emailKey"));
+        if (userKey.equals(emailKey)) {
+            User user = (User) session.getAttribute("user");
+            joinService.addUser(user);
+            session.invalidate();
+        }
+
+        return "redirect:/";
+    }
+
+
+    //랜덤 인증번호 생성
+    private String newRandomNumber() {
+        String randomNum = "";
+        for (int i = 0; i < 4; i++) {
+            randomNum += String.valueOf((int)Math.floor(Math.random() * 10));
+        }
+        return randomNum;
+    }
+
+    //alert page로 이동하는 메서드 만들기
+    private String sendAlertPage( String message,Model model, HttpServletRequest request) {
+        model.addAttribute("message", message);
+        model.addAttribute("redirectURL", request.getRequestURI());
+        return "/common/alertPage";
     }
     
 }
