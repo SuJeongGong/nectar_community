@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:fragment="head">
+    <head th:fragment="head (title)">
         <!-- Required meta tags -->
         <!-- sdfsdfsdRequired meta tags tetstst-->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>타이틀</title>
+        <title th:replace="${title}">타이틀</title>
         <!-- plugins:css -->
         <link rel="stylesheet" href="/template/vendors/feather/feather.css">
         <link rel="stylesheet" href="/template/vendors/ti-icons/css/themify-icons.css">

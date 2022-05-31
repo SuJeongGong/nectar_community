@@ -2,38 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.nectarsoft.community.user.dao.UserDAO">
     <select id="selectCountUserById" parameterType="String" resultType="int">
-        select  count(*)
-        from    "USER"
-        where   id = #{id}
+        select count(*)
+        from "USER"
+        where id = #{id}
     </select>
 
     <select id="selectCountUserByEmail" parameterType="String" resultType="int">
-        select  count(*)
-        from    "USER"
-        where   Email = #{email}
+        select count(*)
+        from "USER"
+        where Email = #{email}
     </select>
 
-    <insert id="insertUser" parameterType="map">
-        insert into "USER"(
-            id,
-            pw,
-            auth,
-            name,
-            phone,
-            nickname,
-            email,
-            last_logined,
-            delete_at
-        )values (
+    <insert id="insertUser" parameterType="User">
+        insert into "USER"
+        (id,
+         pw,
+         auth,
+         name,
+         phone,
+         nickname,
+         email,
+         last_logined,
+         delete_at)
+        values (#{id},
+                #{pw},
+                'USER',
+                #{name},
+                #{phone},
+                #{nickname},
+                #{email},
+                #{lastLoginDate},
+                'F')
+    </insert>
+
+    <select id="selectUser" parameterType="User" resultType="User">
+        select *
+        from "USER"
+        where id = #{id}
+    </select>
+
+    <update id="updateLoginDate" parameterType="User">
+        update "USER"
+        set last_logined = #{lastLogined}
+        where id = #{id}
+    </update>
+
+    <insert id="insertLoginLog" parameterType="User">
+        insert into LOGIN_LOG
+        (id,
+         user_id,
+         user_ip,
+         login_date)
+         values(
+            login_log_idx.nextval,
             #{id},
-            #{pw},
-            'USER',
-            #{name},
-            #{phone},
-            #{nickname},
-            #{email},
-            #{lastLoginDate},
-            'F'
-         )
+                #{ip},
+                #{login_date}
+        )
     </insert>
 </mapper>
