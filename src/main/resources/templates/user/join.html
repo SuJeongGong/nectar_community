@@ -1,94 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html th:replace="~{partials/layoutUser :: layout(~{::title}, ~{::form}, ~{::h4}, ~{::h6})}"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="partials/config :: head"></head>
+<head>
+    <title>
+        회원가입
+    </title>
+</head>
 
 <body>
-<div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth px-0">
-            <div class="row w-100 mx-0">
-                <div class="col-lg-4 mx-auto">
-                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                        <div class="brand-logo">
-                            <img src="/template/images/logo.svg" alt="logo">
-                        </div>
-                        <h4>회원가입</h4>
-                        <h6 class="font-weight-light">
-                            <div class="badge  badge-warning">필수</div>
-                            표시 되어있는건 필수 정보입니다.
-                        </h6>
-                        <form class="pt-3" action="/join/form.do" method="post" th:object="${user}">
-                            <div class="form-group">
-                                <label for="id">
-                                    <div class="badge  badge-warning">필수</div>
-                                    아이디</label>
-                                <input type="text" class="form-control form-control-lg" th:field="*{id}" placeholder="아이디">
-                            </div>
-                            <div class="form-group">
-                                <label for="pw">
-                                    <div class="badge  badge-warning">필수</div>
-                                    비밀번호</label>
-                                <input type="text" class="form-control form-control-lg"  th:field="*{pw}" placeholder="비밀번호">
-                            </div>
-                            <div class="form-group">
-                                <label for="pwCheck">
-                                    <div class="badge  badge-warning">필수</div>
-                                    비밀번호 확인</label>
-                                <input type="text" class="form-control form-control-lg"   id="pwCheck"
-                                       placeholder="비밀번호 확인">
-                            </div>
-                            <div class="form-group">
-                                <label for="name">이름</label>
-                                <input type="text" class="form-control form-control-lg"  th:field="*{name}" placeholder="이름">
-                            </div>
-                            <div class="form-group">
-                                <label for="nickname">
-                                    <div class="badge  badge-warning">필수</div>
-                                    닉네임</label>
-                                <input type="text" class="form-control form-control-lg"  th:field="*{nickname}"placeholder="닉네임">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">
-                                    <div class="badge  badge-warning">필수</div>
-                                    핸드폰번호</label>
-                                <input type="text" class="form-control form-control-lg" th:field="*{phone}" placeholder="01012345678">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">
-                                    <div class="badge  badge-warning">필수</div>
-                                    이메일</label>
-                                <input type="email" class="form-control form-control-lg"  th:field="*{email}" placeholder="이메일">
-                            </div>
-                            <!--
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input">
-                                        개인정보 활용에 동의 합니다.
-                                    </label>
-                                </div>
-                            </div>
-                            -->
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                   href="/join.do">회원가입</button>
-                            </div>
-                            <div class="text-center mt-4 font-weight-light">
-                                이미 계정이 있다면? <a href="/login.do" class="text-primary">로그인 하러가기</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- content-wrapper ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
 
-<div th:replace="partials/plugins :: plugins" style="display: none;"></div>
+<h4>회원가입</h4>
+<h6 class="font-weight-light">
+    <div class="badge  badge-warning">필수</div>
+    표시 되어있는건 필수 정보입니다.
+</h6>
+<form class="pt-3" action="/join/form.do" method="post" th:object="${user}">
+    <div class="form-group">
+        <label for="id">
+            <div class="badge  badge-warning">필수</div>
+            아이디</label>
+        <input type="text" class="form-control form-control-lg" th:field="*{id}" placeholder="아이디">
+    </div>
+    <div class="form-group">
+        <label for="pw">
+            <div class="badge  badge-warning">필수</div>
+            비밀번호</label>
+        <input type="text" class="form-control form-control-lg" th:field="*{pw}" placeholder="비밀번호">
+    </div>
+    <div class="form-group">
+        <label for="pwCheck">
+            <div class="badge  badge-warning">필수</div>
+            비밀번호 확인</label>
+        <input type="text" class="form-control form-control-lg" id="pwCheck"
+               placeholder="비밀번호 확인">
+    </div>
+    <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" class="form-control form-control-lg" th:field="*{name}" placeholder="이름">
+    </div>
+    <div class="form-group">
+        <label for="nickname">
+            <div class="badge  badge-warning">필수</div>
+            닉네임</label>
+        <input type="text" class="form-control form-control-lg" th:field="*{nickname}" placeholder="닉네임">
+    </div>
+    <div class="form-group">
+        <label for="phone">
+            <div class="badge  badge-warning">필수</div>
+            핸드폰번호</label>
+        <input type="text" class="form-control form-control-lg" th:field="*{phone}" placeholder="01012345678">
+    </div>
+    <div class="form-group">
+        <label for="email">
+            <div class="badge  badge-warning">필수</div>
+            이메일</label>
+        <input type="email" class="form-control form-control-lg" th:field="*{email}" placeholder="이메일">
+    </div>
+    <!--
+    <div class="mb-4">
+        <div class="form-check">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input">
+                개인정보 활용에 동의 합니다.
+            </label>
+        </div>
+    </div>
+    -->
+    <div class="mt-3">
+        <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                href="/join.do">회원가입
+        </button>
+    </div>
+    <div class="text-center mt-4 font-weight-light">
+        이미 계정이 있다면? <a href="/login.do" class="text-primary">로그인 하러가기</a>
+    </div>
+</form>
+<!-- container-scroller -->
 <!-- Custom js for this page-->
 <script type="text/javascript">
     /**
@@ -124,7 +112,7 @@
                 .catch((error) => {
                     console.log(error);
                 });
-        }else{
+        } else {
             if (!!document.getElementById("resId")) {
                 document.getElementById("resId").remove();
             }
@@ -166,7 +154,7 @@
                 .catch((error) => {
                     console.log(error);
                 });
-        }else{
+        } else {
             if (!!document.getElementById("resEmail")) {
                 document.getElementById("resEmail").remove();
             }
@@ -176,18 +164,18 @@
     /**
      * 비밀번호 조건 체크
      */
-    document.getElementById("pw").addEventListener('keyup', function(){
+    document.getElementById("pw").addEventListener('keyup', function () {
         checkPw()
     });
 
     /**
      * 비밀번호와 비밀번호 확인 체크
      */
-    document.getElementById("pwCheck").addEventListener('keyup',function(){
+    document.getElementById("pwCheck").addEventListener('keyup', function () {
         checkPw()
     });
 
-    function checkPw(){
+    function checkPw() {
 
         const pw = document.getElementById("pw").value;
         const pwCheck = document.getElementById("pwCheck").value;
@@ -196,12 +184,12 @@
         if (!!document.getElementById("resPw")) {
             document.getElementById("resPw").remove();
         }
-        if(pw.length > 1){
+        if (pw.length > 1) {
             const resultPwTag = document.createElement('p');
-            if(pwReg.test(pw)){
+            if (pwReg.test(pw)) {
                 resultPwTag.textContent = '사용할 수 있는 비밀번호 입니다.';
                 resultPwTag.classList.add("text-success");
-            }else{
+            } else {
                 resultPwTag.textContent = '사용할 수 없는 비밀번호 입니다.';
                 resultPwTag.classList.add("text-danger");
             }
@@ -212,12 +200,12 @@
         if (!!document.getElementById("resPwCheck")) {
             document.getElementById("resPwCheck").remove();
         }
-        if(pwCheck.length > 1){
+        if (pwCheck.length > 1) {
             const resultPwCheckTag = document.createElement('p');
-            if(pw===pwCheck){
+            if (pw === pwCheck) {
                 resultPwCheckTag.textContent = '비밀번호와 값이 같습니다.';
                 resultPwCheckTag.classList.add("text-success");
-            }else{
+            } else {
                 resultPwCheckTag.textContent = '비밀번호와 값이 다릅니다.';
                 resultPwCheckTag.classList.add("text-danger");
             }
