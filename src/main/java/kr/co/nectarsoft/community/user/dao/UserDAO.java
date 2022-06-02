@@ -20,4 +20,8 @@ public interface UserDAO {
     int selectCountUserById(String id);
     int selectCountUserByEmail(String email);
     int insertUser(User user);
+    User selectUserById(User user);
+    int updateLoginDate(User user);
+    int insertLoginLog(User user);
+    int updateUser(User user);
 }

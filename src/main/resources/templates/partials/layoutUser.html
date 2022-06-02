@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, form, subject, subjectDiscript)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="layout (title, form, subject, subjectDiscript, js)" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="partials/config :: head"></head>
+<head th:replace="partials/head :: head(${title})"></head>
 
 <body>
 <div class="container-scroller">
@@ -55,6 +55,7 @@
 
 <div th:replace="partials/plugins :: plugins" style="display: none;"></div>
 <!-- Custom js for this page-->
+<script th:replace="${js}"></script>
 <!-- End custom js for this page-->
 
 </body>

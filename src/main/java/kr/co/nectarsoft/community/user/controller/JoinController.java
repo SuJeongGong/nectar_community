@@ -1,6 +1,7 @@
 package kr.co.nectarsoft.community.user.controller;
 
 import kr.co.nectarsoft.community.user.service.JoinService;
+import kr.co.nectarsoft.community.user.service.UserAuthService;
 import kr.co.nectarsoft.community.user.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +34,8 @@ public class JoinController {
 
     @Autowired
     private JoinService joinService;
+    @Autowired
+    private UserAuthService userAuthService;
 
     /**
      * description : 페이지 연결
@@ -58,24 +60,28 @@ public class JoinController {
      * @return string
      */
     @PostMapping("form.do")
-    public String join(User user, HttpSession session, Model model, HttpServletRequest request){
+    public String join(User user, HttpSession session, Model model){
         Map<String, Object> result = new HashMap<>();
 
         // 비밀번호 확인
         try {
             Map<String, Object> resultPw = joinService.checkPw(user.getPw());
             if ("ERROR".equals(resultPw.get("result"))) {
-                return sendAlertPage("비밀번호가 조건에 맞지 않습니다.",model, request);
+                model.addAttribute("user", user);
+                model.addAttribute("message", "비밀번호가 조건에 맞지 않습니다.");
+                return "/user/join";
             }
+            user.setPw(String.valueOf(resultPw.get("pw")));
         } catch (NoSuchAlgorithmException e) {
-            return sendAlertPage("오류가 발생했습니다.",model, request);
+            model.addAttribute("user", user);
+            model.addAttribute("message", "오류가 발생했습니다.");
+            return "/user/join";
         }
         
         //이메일 인증 요청 보내기
-        String randomNum = newRandomNumber();
-        Map<String, Object> emailRes;
+
         try {
-            joinService.sendEmail(randomNum, user);
+            String randomNum = userAuthService.sendEmail(user);
             //세션에 인증번호 넣기
             session.setAttribute("emailKey", randomNum);
             session.setAttribute("user",user); // 변경해야함 , 비밀번호 암호화 필요
@@ -85,7 +91,9 @@ public class JoinController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return sendAlertPage("오류가 발생했습니다.",model, request);
+        model.addAttribute("user", user);
+        model.addAttribute("message", "오류가 발생했습니다.");
+        return "/user/join";
     }
 
     /**
@@ -118,7 +126,8 @@ public class JoinController {
      * @return string
      */
     @GetMapping("/authentication.do")
-    public String authentication(){
+    public String authentication(Model model){
+        model.addAttribute("link", "/join/authentication.do");
         return "/user/authentication";
     }
 
@@ -131,24 +140,9 @@ public class JoinController {
             session.invalidate();
         }
 
-        return "redirect:/";
+        return "redirect:/login/form.do";
     }
 
 
-    //랜덤 인증번호 생성
-    private String newRandomNumber() {
-        String randomNum = "";
-        for (int i = 0; i < 4; i++) {
-            randomNum += String.valueOf((int)Math.floor(Math.random() * 10));
-        }
-        return randomNum;
-    }
 
-    //alert page로 이동하는 메서드 만들기
-    private String sendAlertPage( String message,Model model, HttpServletRequest request) {
-        model.addAttribute("message", message);
-        model.addAttribute("redirectURL", request.getRequestURI());
-        return "/common/alertPage";
-    }
-    
 }

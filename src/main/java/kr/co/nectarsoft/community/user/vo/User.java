@@ -27,4 +27,5 @@ public class User {
     private String phone;
     private String deleteAt;
     private String deleteDate;
+    private String ip;
 }

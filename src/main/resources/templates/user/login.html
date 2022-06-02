@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{partials/layoutUser :: layout(~{::title}, ~{::form}, ~{::h4}, ~{::h6})}"
+<html th:replace="~{partials/layoutUser :: layout(~{::title}, ~{::form}, ~{::h4}, ~{::h6}, ~{::script})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -12,7 +12,7 @@
 
 <h4>로그인</h4>
 <h6 class="font-weight-light">자신의 계정으로 로그인하세요.</h6>
-<form class="pt-3" th:object="${user}">
+<form class="pt-3"  th:action="@{/login/form.do}" method="post"  th:object="${user}">
     <div class="form-group">
         <input type="text" class="form-control form-control-lg" th:field="*{id}" placeholder="Id">
     </div>
@@ -20,9 +20,9 @@
         <input type="password" class="form-control form-control-lg" th:field="*{pw}" placeholder="Password">
     </div>
     <div class="mt-3">
-        <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="/template/index.html">
+        <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
             로그인
-        </a>
+        </button>
     </div>
     <!--
     <div class="my-2 d-flex justify-content-between align-items-center">
@@ -44,7 +44,10 @@
         계정이 없으신가요?<a href="/join/form.do" class="text-primary">회원가입</a>
     </div>
 </form>
-
+<script type="text/javascript"  th:inline="javascript">
+    const messageText = [[${message}]];
+    alert(messageText);
+</script>
 </body>
 
 </html>

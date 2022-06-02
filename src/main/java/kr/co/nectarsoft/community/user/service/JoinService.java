@@ -43,7 +43,7 @@ public interface JoinService {
     public boolean checkEmail(String email);
 
     /**
-     * description : 미인증 유저 추가하기
+     * description : 유저 추가하기
      * methodName : addUnAuthUser
      * author : Gong SuJeong
      * date : 2022.05.27
@@ -51,20 +51,6 @@ public interface JoinService {
      * @param user the user
      */
     public void addUser(User user);
-
-
-    /**
-     * description : 이메일 보내기
-     * methodName : sendEmail
-     * author : Gong SuJeong
-     * date : 2022.05.27
-     *
-     * @param randomNum 인증 번호
-     * @param user   전송할 대상
-     * @throws MessagingException           the messaging exception
-     * @throws UnsupportedEncodingException the unsupported encoding exception
-     */
-    public void sendEmail(String randomNum, User user) throws MessagingException, UnsupportedEncodingException;
 
     /**
      * description : 비밀번호 확인 후 암호화

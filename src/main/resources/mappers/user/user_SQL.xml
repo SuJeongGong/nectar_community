@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.nectarsoft.community.user.dao.UserDAO">
+
+    <resultMap type="User" id="userResultMap">
+        <result property="deleteDate" column="DELETE_DATE"/>
+        <result property="deleteAt" column="DELETE_AT"/>
+        <result property="id" column="ID"/>
+        <result property="pw" column="PW"/>
+        <result property="name" column="NAME"/>
+        <result property="nickname" column="NICKNAME"/>
+        <result property="auth" column="AUTH"/>
+        <result property="phone" column="PHONE"/>
+        <result property="email" column="EMAIL"/>
+        <result property="lastLoginDate" column="LAST_LOGINED"/>
+    </resultMap>
+
     <select id="selectCountUserById" parameterType="String" resultType="int">
         select count(*)
         from "USER"
@@ -14,16 +28,15 @@
     </select>
 
     <insert id="insertUser" parameterType="User">
-        insert into "USER"
-        (id,
-         pw,
-         auth,
-         name,
-         phone,
-         nickname,
-         email,
-         last_logined,
-         delete_at)
+        insert into "USER"(id,
+                           pw,
+                           auth,
+                           name,
+                           phone,
+                           NICKNAME,
+                           email,
+                           last_logined,
+                           delete_at)
         values (#{id},
                 #{pw},
                 'USER',
@@ -35,29 +48,42 @@
                 'F')
     </insert>
 
-    <select id="selectUser" parameterType="User" resultType="User">
+    <select id="selectUserById" parameterType="User" resultMap="userResultMap">
         select *
         from "USER"
-        where id = #{id}
+        where ID = #{id}
     </select>
 
     <update id="updateLoginDate" parameterType="User">
         update "USER"
-        set last_logined = #{lastLogined}
+        set last_logined = #{lastLoginDate}
         where id = #{id}
     </update>
 
     <insert id="insertLoginLog" parameterType="User">
-        insert into LOGIN_LOG
-        (id,
-         user_id,
-         user_ip,
-         login_date)
-         values(
-            login_log_idx.nextval,
-            #{id},
+        insert into LOGIN_LOG (IDX,
+                               USER_ID,
+                               USER_IP,
+                               LOGIN_DATE)
+        values (login_log_idx.nextval,
+                #{id},
                 #{ip},
-                #{login_date}
-        )
+                #{lastLoginDate})
     </insert>
+
+    <update id="updateUser"  parameterType="User">
+        update  "USER"
+        set     email = #{email},
+                name = #{name},
+                NICKNAME = #{nickname},
+                phone = #{phone}
+                <if test="pw != null and pw != ''">
+                    , pw = #{pw}
+                </if>
+                <if test="deleteAt != null and deleteAt != ''">
+                    , delete_AT = #{deleteAt}
+                    , delete_Date = #{deleteDate}
+                </if>
+        where   id=#{id}
+    </update>
 </mapper>

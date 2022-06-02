@@ -104,6 +104,13 @@
 		</dependency>
 		<!-- log4jdbc -->
 
+		<!-- Quartz  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+		</dependency>
+		<!-- Quartz  -->
+
 
 	</dependencies>
 

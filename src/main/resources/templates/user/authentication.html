@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{partials/layoutUser :: layout(~{::title}, ~{::form}, ~{::h4}, ~{::h6})}"
+<html th:replace="~{partials/layoutUser :: layout(~{::title}, ~{::form}, ~{::h4}, ~{::h6}, ~{::script})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -14,7 +14,7 @@
 <h6 class="font-weight-light">
     이메일로 보내드린 인증번호를 입력하세요.
 </h6>
-<form class="pt-3" action="/join/authentication.do" method="post">
+<form class="pt-3" th:action="@{link}"  method="post">
     <div class="form-group">
         <label for="id">인증번호</label>
         <input type="text" class="form-control form-control-lg" id="emailKey" name="emailKey" placeholder="인증번호">

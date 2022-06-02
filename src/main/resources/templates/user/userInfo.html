@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{partials/layoutMain :: layout(~{::title},  ~{::div})}"
+<html th:replace="~{partials/layoutMain :: layout(~{::title},  ~{::div},  ~{::script})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -29,46 +29,39 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <form class="forms-sample">
+                    <form class="forms-sample" id="user" th:object="${user}" action="/user/mypage.do" method="post" >
                         <div class="form-group">
-                            <label for="exampleInputName1">Name</label>
-                            <div type="text" class="form-control" id="exampleInputName1"></div>
+                            <label for="id">아이디</label>
+                            <div type="text" class="form-control" id="id" th:text="*{id}"></div>
+                            <input type="hidden" class="form-control" th:field="*{id}">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail3">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail3">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" th:field="*{name}">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword4">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword4">
+                            <label for="pw">비밀번호</label>
+                            <input type="password" class="form-control" id="pw">
                         </div>
                         <div class="form-group">
-                            <label for="exampleSelectGender">Gender</label>
-                            <select class="form-control" id="exampleSelectGender">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
+                            <label for="pwCheck">비밀번호 확인</label>
+                            <input type="password" class="form-control" id="pwCheck">
                         </div>
                         <div class="form-group">
-                            <label>File upload</label>
-                            <input type="file" name="img[]" class="file-upload-default">
-                            <div class="input-group col-xs-12">
-                                <input type="text" class="form-control file-upload-info" disabled="">
-                                <span class="input-group-append">
-                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                        </span>
-                            </div>
+                            <label for="email">이메일</label>
+                            <input type="email" class="form-control" th:field="*{email}">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputCity1">City</label>
-                            <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
+                            <label for="phone">핸드폰번호</label>
+                            <input type="text" class="form-control"  th:field="*{phone}">
                         </div>
                         <div class="form-group">
-                            <label for="exampleTextarea1">Textarea</label>
-                            <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                            <label for="nickname">닉네임</label>
+                            <input type="text" class="form-control"  th:field="*{nickname}">
                         </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button class="btn btn-light">Cancel</button>
+                        <button type="submit" class="btn btn-primary mr-2">수정</button>
+                        <button class="btn btn-light">취소</button>
+                        <button type="submit" class="btn btn-danger float-right" id="delete">회원탈퇴</button>
                     </form>
                 </div>
             </div>
@@ -77,6 +70,111 @@
 </div>
 
 <script type="text/javascript">
+    /**
+     * 이메일 중복체크
+     */
+    document.getElementById("email").addEventListener('input', function () {
+        const userEmail = document.getElementById("email").value;
+        //정규식
+        const emailReg = /.+@[a-zA-Z]+(\.[a-zA-Z]+){1,2}/g;
+
+        if (emailReg.test(userEmail)) {
+            fetch('/join/check/email/' + userEmail)
+                .then((response) => {
+                    if (!response.ok) {
+                        console.log("response.status 오류");
+                        throw new Error("Failed with HTTP code " + response.status);
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+
+                    if (!!document.getElementById("resEmail")) {
+                        document.getElementById("resEmail").remove();
+                    }
+                    const resultTag = document.createElement('p');
+                    if (result) {
+                        resultTag.textContent = '사용할 수 있는 이메일 입니다.';
+                        resultTag.classList.add("text-success");
+                    } else {
+                        resultTag.textContent = '사용할 수 없는 이메일 입니다.';
+                        resultTag.classList.add("text-danger");
+                    }
+                    resultTag.id = "resEmail";
+                    document.getElementById("email").parentElement.appendChild(resultTag);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            if (!!document.getElementById("resEmail")) {
+                document.getElementById("resEmail").remove();
+            }
+        }
+    });
+
+    /**
+     * 회원 탈퇴
+     */
+    document.getElementById("delete").addEventListener('click', function () {
+        if(confirm("정말 탈퇴하시겠습니까? 재가입시에도 사용했던 아이디는 사용하실 수 없습니다.")){
+            document.getElementById("user").action = "/user/deleteUser.do";
+        }
+    });
+
+
+    /**
+     * 비밀번호 조건 체크
+     */
+    document.getElementById("pw").addEventListener('keyup', function () {
+        checkPw()
+    });
+
+    /**
+     * 비밀번호와 비밀번호 확인 체크
+     */
+    document.getElementById("pwCheck").addEventListener('keyup', function () {
+        checkPw()
+    });
+
+    function checkPw() {
+
+        const pw = document.getElementById("pw").value;
+        const pwCheck = document.getElementById("pwCheck").value;
+        const pwReg = /(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}/g;
+
+        if (!!document.getElementById("resPw")) {
+            document.getElementById("resPw").remove();
+        }
+        if (pw.length > 1) {
+            const resultPwTag = document.createElement('p');
+            if (pwReg.test(pw)) {
+                resultPwTag.textContent = '사용할 수 있는 비밀번호 입니다.';
+                resultPwTag.classList.add("text-success");
+            } else {
+                resultPwTag.textContent = '사용할 수 없는 비밀번호 입니다.';
+                resultPwTag.classList.add("text-danger");
+            }
+            resultPwTag.id = "resPw";
+            document.getElementById("pw").parentElement.appendChild(resultPwTag);
+        }
+
+        if (!!document.getElementById("resPwCheck")) {
+            document.getElementById("resPwCheck").remove();
+        }
+        if (pwCheck.length > 1) {
+            const resultPwCheckTag = document.createElement('p');
+            if (pw === pwCheck) {
+                resultPwCheckTag.textContent = '비밀번호와 값이 같습니다.';
+                resultPwCheckTag.classList.add("text-success");
+            } else {
+                resultPwCheckTag.textContent = '비밀번호와 값이 다릅니다.';
+                resultPwCheckTag.classList.add("text-danger");
+            }
+            resultPwCheckTag.id = "resPwCheck";
+            document.getElementById("pwCheck").parentElement.appendChild(resultPwCheckTag);
+        }
+    }
 
 </script>
 <!-- End custom js for this page-->
