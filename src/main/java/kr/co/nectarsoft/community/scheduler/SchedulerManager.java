@@ -24,8 +24,9 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Component
 public class SchedulerManager {
+    //static
     @Autowired
-    static UserSchedulerService userSchedulerService;
+    UserSchedulerService userSchedulerService;
 
     private SchedulerFactory schedulerFactory;
     private Scheduler scheduler;

@@ -6,7 +6,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 /**
- * description    : 유저 관련 서비스
+ * description    : 유저 인증 관련 서비스
  * packageName    : kr.co.nectarsoft.community.user.service
  * fileName       : UserAuthService
  * author         : GongSuJeong
@@ -28,6 +28,8 @@ public interface UserAuthService {
      * @throws MessagingException           the messaging exception
      * @throws UnsupportedEncodingException the unsupported encoding exception
      */
-    public String sendEmail(User user) throws MessagingException, UnsupportedEncodingException;
+    String sendEmailRandomNumber(User user) throws MessagingException, UnsupportedEncodingException;
+    void sendEmailWarning(User user) throws MessagingException, UnsupportedEncodingException;
+
 
 }

@@ -81,7 +81,7 @@ public class JoinController {
         //이메일 인증 요청 보내기
 
         try {
-            String randomNum = userAuthService.sendEmail(user);
+            String randomNum = userAuthService.sendEmailRandomNumber(user);
             //세션에 인증번호 넣기
             session.setAttribute("emailKey", randomNum);
             session.setAttribute("user",user); // 변경해야함 , 비밀번호 암호화 필요

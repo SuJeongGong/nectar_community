@@ -28,4 +28,5 @@ public class User {
     private String deleteAt;
     private String deleteDate;
     private String ip;
+    private String warnMailDate;
 }

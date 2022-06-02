@@ -1,6 +1,5 @@
 package kr.co.nectarsoft.community.user.controller;
 
-import kr.co.nectarsoft.community.common.utils.MailUtils;
 import kr.co.nectarsoft.community.user.service.UserAuthService;
 import kr.co.nectarsoft.community.user.service.UserInfoService;
 import kr.co.nectarsoft.community.user.vo.User;
@@ -68,12 +67,12 @@ public class UserInfoController {
     @PostMapping("mypage.do")
     public String userInfoUpdate(User user, Model model, HttpSession session){
         User originUser = userInfoService.searchUserInfo(user.getId());
-        
+
         //이메일이 변경 되었다면
         if(!originUser.getEmail().equals(user.getEmail())){
             //이메일 인증 요청 보내기
             try {
-                String randomNum = userAuthService.sendEmail(user);
+                String randomNum = userAuthService.sendEmailRandomNumber(user);
                 //세션에 인증번호 넣기
                 session.setAttribute("emailKey", randomNum);
                 session.setAttribute("user",user); // 변경해야함 , 비밀번호 암호화 필요

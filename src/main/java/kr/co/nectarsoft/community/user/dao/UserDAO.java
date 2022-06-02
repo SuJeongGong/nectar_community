@@ -3,6 +3,9 @@ package kr.co.nectarsoft.community.user.dao;
 import kr.co.nectarsoft.community.user.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * packageName    : kr.co.nectarsoft.community.user.dao
  * fileName       : UserDAO
@@ -24,4 +27,7 @@ public interface UserDAO {
     int updateLoginDate(User user);
     int insertLoginLog(User user);
     int updateUser(User user);
+    List<User> selectUsersNotLogined(Map<String, String> map);
+
+    int updateWarnMail(User user);
 }
