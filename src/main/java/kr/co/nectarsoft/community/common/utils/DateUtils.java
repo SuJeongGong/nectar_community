@@ -15,7 +15,7 @@ import java.util.Calendar;
  * 2022-05-27        GongSuJeong       최초 생성
  */
 public class DateUtils {
-    static SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+    static SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddhhmmss");
     static SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
 
     public static String getNow(String type) {

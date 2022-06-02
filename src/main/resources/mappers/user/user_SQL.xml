@@ -78,6 +78,18 @@
         where TO_DATE(#{today}, 'YYYYMMDD') - TO_Date(LAST_LOGINED, 'YYYYMMDD') > #{term}
     </select>
 
+    <update id="realDeleteUsers" parameterType="string">
+        update "USER"
+        set name = '',
+            nickname = '탈퇴한 유저',
+            pw = '',
+            email = '',
+            last_logined ='',
+            phone = ''
+        where DELETE_AT = 'T'
+            and  TO_DATE (#{today} ,'YYYYMMDDHH24MISS') - TO_DATE(WARN_MAIL_DATE ,'YYYYMMDDHH24MISS') > #{term}
+    </update>
+
 
     <update id="updateUser"  parameterType="User">
         update  "USER"

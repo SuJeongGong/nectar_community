@@ -28,6 +28,7 @@ public interface UserDAO {
     int insertLoginLog(User user);
     int updateUser(User user);
     List<User> selectUsersNotLogined(Map<String, String> map);
-
     int updateWarnMail(User user);
+    int realDeleteUsers(String term);
+    int deleteUser(Map<String, String> map);
 }
