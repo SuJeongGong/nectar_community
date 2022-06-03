@@ -46,7 +46,9 @@
 </form>
 <script type="text/javascript"  th:inline="javascript">
     const messageText = [[${message}]];
-    alert(messageText);
+    if(messageText!=null && messageText !=''){
+        alert(messageText);
+    }
 </script>
 </body>
 

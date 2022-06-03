@@ -76,26 +76,30 @@
 <!--                    </div>-->
 <!--                </li>-->
                 <li class="nav-item nav-profile dropdown">
-                    <a class="nav-link dropdown-toggle" href="/template/#" data-toggle="dropdown" id="profileDropdown">
+                    <a class="nav-link dropdown-toggle" href="/#" data-toggle="dropdown" id="profileDropdown">
                         <img src="/template/images/faces/face28.jpg" alt="profile"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item">
+                        <th:block th:if="${#session.getAttribute('userId')} != null">
+                        <a class="dropdown-item" href="/user/mypage.do">
                             <i class="ti-settings text-primary"></i>
                             마이페이지
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/login/logout.do">
                             <i class="ti-power-off text-primary"></i>
                             로그아웃
                         </a>
-                        <a class="dropdown-item">
-                            <i class="ti-settings text-primary"></i>
-                            회원가입
-                        </a>
-                        <a class="dropdown-item">
-                            <i class="ti-power-off text-primary"></i>
-                            로그인
-                        </a>
+                        </th:block>
+                        <th:block th:if="${#session.getAttribute('userId')} == null">
+                            <a class="dropdown-item" href="/join/form.do">
+                                <i class="ti-settings text-primary"></i>
+                                회원가입
+                            </a>
+                            <a class="dropdown-item" href="/login/form.do">
+                                <i class="ti-power-off text-primary"></i>
+                                로그인
+                            </a>
+                        </th:block>
                     </div>
                 </li>
 <!--                <li class="nav-item nav-settings d-none d-lg-flex">-->
@@ -291,12 +295,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="ui-basic">
+                    <a class="nav-link" data-toggle="collapse" href="#board" aria-expanded="false" aria-controls="ui-basic">
                         <i class="icon-layout menu-icon"></i>
-                        <span class="menu-title">22</span>
+                        <span class="menu-title">게시판</span>
                         <i class="menu-arrow"></i>
                     </a>
-                    <div class="collapse" id="ui-basic">
+                    <div class="collapse" id="board">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="/template/pages/ui-features/buttons.html">3</a></li>
                             <li class="nav-item"> <a class="nav-link" href="/template/pages/ui-features/dropdowns.html">4</a></li>
