@@ -52,14 +52,4 @@ public interface JoinService {
      */
     public void addUser(User user);
 
-    /**
-     * description : 비밀번호 확인 후 암호화
-     * methodName : checkPw
-     * author : Gong SuJeong
-     * date : 2022.05.29
-     *
-     * @param pw 비밀번호
-     * @return map 비밀번호 확인 결과 및 암호화 비밀번호
-     */
-    public Map<String, Object> checkPw(String pw) throws NoSuchAlgorithmException;
 }

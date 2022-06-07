@@ -15,6 +15,7 @@
         <result property="lastLoginDate" column="LAST_LOGINED"/>
     </resultMap>
 
+
     <select id="selectCountUserById" parameterType="String" resultType="int">
         select count(*)
         from "USER"
@@ -75,7 +76,8 @@
     <select id="selectUsersNotLogined" resultMap="userResultMap" parameterType="map">
         select *
         from "USER"
-        where TO_DATE(#{today}, 'YYYYMMDD') - TO_Date(LAST_LOGINED, 'YYYYMMDD') > #{term}
+        where TO_DATE (#{today} ,'YYYYMMDDHH24MISS') - TO_DATE(WARN_MAIL_DATE ,'YYYYMMDDHH24MISS') > #{term}
+            and WARN_MAIL_DATE = null
     </select>
 
     <update id="realDeleteUsers" parameterType="string">
@@ -90,11 +92,17 @@
             and  TO_DATE (#{today} ,'YYYYMMDDHH24MISS') - TO_DATE(WARN_MAIL_DATE ,'YYYYMMDDHH24MISS') > #{term}
     </update>
 
+    <update id="deleteUser" parameterType="User">
+        update "USER"
+        set delete_at = #{deleteAt}
+            and delete_date = #{deleteDate}
+        where id = #{id}
+    </update>
+
 
     <update id="updateUser"  parameterType="User">
         update  "USER"
-        set     email = #{email},
-                name = #{name},
+        set     name = #{name},
                 NICKNAME = #{nickname},
                 phone = #{phone}
                 <if test="pw != null and pw != ''">
@@ -103,6 +111,9 @@
                 <if test="deleteAt != null and deleteAt != ''">
                     , delete_AT = #{deleteAt}
                     , delete_Date = #{deleteDate}
+                </if>
+                <if test="email != null and email != ''">
+                    ,email = #{email}
                 </if>
         where   id=#{id}
     </update>

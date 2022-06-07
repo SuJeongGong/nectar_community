@@ -45,7 +45,8 @@ public class SchedulerManager {
         JobDetail job = JobBuilder.newJob(UserSchedulerJobDetail.class).setJobData(dataMap).withIdentity("testJob").build();
 
         // trigger 지정 - cron식으로
-        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("* /1 * * * ?")).build();
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 5 * * * ?")).build();
+//        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("* /1 * * * ?")).build();
 
         scheduler.scheduleJob(job, trigger);
         scheduler.start();

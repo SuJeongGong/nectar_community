@@ -44,4 +44,5 @@ public interface UserInfoService {
      * @param user
      */
     public void deleteUser(User user);
+
 }

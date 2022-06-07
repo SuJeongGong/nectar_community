@@ -34,8 +34,6 @@ public class JoinServiceImpl implements JoinService {
 
     @Autowired
     private UserDAO userDAO;
-    @Autowired
-    private SHA256 sha256;
 
 
 
@@ -57,20 +55,4 @@ public class JoinServiceImpl implements JoinService {
         return;
     }
 
-    @Override
-    public Map<String, Object> checkPw(String pw) throws NoSuchAlgorithmException {
-        Map<String, Object> result = new HashMap<>();
-        
-        // 비밀번호 확인
-        String pwReg = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$";
-        if (!Pattern.matches(pwReg, pw)) {
-            result.put("error", "비밀번호가 조건에 맞지 않습니다.");
-            result.put("result", "ERROR");
-        }else{
-            //비밀번호 암호화
-            result.put("result", "OK");
-            result.put("pw", sha256.encrypt(pw));
-        }
-        return result;
-    }
 }

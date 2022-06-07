@@ -1,12 +1,15 @@
 package kr.co.nectarsoft.community.user.controller;
 
-import kr.co.nectarsoft.community.user.service.JoinService;
+import kr.co.nectarsoft.community.user.form.LoginForm;
 import kr.co.nectarsoft.community.user.service.LoginService;
 import kr.co.nectarsoft.community.user.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
  * -----------------------------------------------------------
  * 2022-05-27        GongSuJeong       최초 생성
  */
-
 @RequestMapping("/login/*")
 @Controller
 public class LoginConroller {
@@ -32,18 +34,46 @@ public class LoginConroller {
     @Autowired
     private LoginService loginService;
 
+    /**
+     * description : 로그인 화면 연결
+     * methodName : loginForm
+     * author : Gong SuJeong
+     * date : 2022.06.03
+     *
+     * @param model
+     * @return string
+     */
     @GetMapping("form.do")
     public String loginForm(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new LoginForm());
         return "/user/login";
     }
-    @PostMapping("form.do")
-    public String login(User user, HttpSession session, Model model){
 
+    /**
+     * description : 로그인 처리
+     * methodName : login
+     * author : Gong SuJeong
+     * date : 2022.06.07
+     *
+     * @param form
+     * @param session
+     * @param bindingResult
+     * @return string
+     */
+    @PostMapping("form.do")
+    public String login(@Validated @ModelAttribute("user") LoginForm form, BindingResult bindingResult, HttpSession session){
+        if (bindingResult.hasErrors()) {
+            form.setMessage("오류가 발생했습니다.");
+            return "/user/login";
+        }
+
+        User user = new User();
+        user.setId(form.getId());
+        user.setPw(form.getPw());
         try {
             User loginUser = loginService.login(user);
-            if (loginUser.getId()==null) {
-                model.addAttribute("message", "아이디 또는 비밀번호가 일치하지 않거나 탈퇴한 회원 입니다.");
+            if (loginUser.getId()==null) {//service에서 체크 후 안맞으면 new User()리턴이라
+                form.setMessage("아이디 또는 비밀번호가 일치하지 않거나 탈퇴한 회원 입니다.");
                 return"/user/login";
             }
             session.setAttribute("userId", user.getId());
@@ -52,6 +82,20 @@ public class LoginConroller {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return "redirect:/";
+    }
+
+    /**
+     * description : 로그아웃 처리
+     * methodName : logout
+     * author : Gong SuJeong
+     * date : 2022..
+     *
+     * @return string
+     */
+    @GetMapping("logout.do")
+    public String logout(HttpSession session){
+        session.invalidate(); // 세션 초기화
         return "redirect:/";
     }
 }

@@ -1,5 +1,6 @@
 package kr.co.nectarsoft.community.user.controller;
 
+import kr.co.nectarsoft.community.user.form.JoinForm;
 import kr.co.nectarsoft.community.user.service.JoinService;
 import kr.co.nectarsoft.community.user.service.UserAuthService;
 import kr.co.nectarsoft.community.user.vo.User;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -47,7 +50,7 @@ public class JoinController {
      */
     @GetMapping("form.do")
     public String joinForm(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new JoinForm());
         return "/user/join";
     }
 
@@ -60,39 +63,43 @@ public class JoinController {
      * @return string
      */
     @PostMapping("form.do")
-    public String join(User user, HttpSession session, Model model){
-        Map<String, Object> result = new HashMap<>();
-
-        // 비밀번호 확인
-        try {
-            Map<String, Object> resultPw = joinService.checkPw(user.getPw());
-            if ("ERROR".equals(resultPw.get("result"))) {
-                model.addAttribute("user", user);
-                model.addAttribute("message", "비밀번호가 조건에 맞지 않습니다.");
-                return "/user/join";
-            }
-            user.setPw(String.valueOf(resultPw.get("pw")));
-        } catch (NoSuchAlgorithmException e) {
-            model.addAttribute("user", user);
-            model.addAttribute("message", "오류가 발생했습니다.");
+    public String join(@Validated @ModelAttribute("user") JoinForm form, BindingResult bindingResult,HttpSession session){
+        //검증
+        if(bindingResult.hasErrors()){
             return "/user/join";
         }
         
+        //user로 변환
+        User user = new User();
+        user.setId(form.getId());
+        user.setEmail(form.getEmail());
+        user.setName(form.getName());
+        user.setNickname(form.getNickname());
+        user.setAuth("USER");
+        user.setPhone(form.getPhone());
+        try {
+            user.setPw(userAuthService.pwEncryption(form.getPw()));
+        } catch (NoSuchAlgorithmException e) {
+            form.setMessage("오류가 발생했습니다.");
+            return "/user/join";
+        }
+
         //이메일 인증 요청 보내기
 
         try {
             String randomNum = userAuthService.sendEmailRandomNumber(user);
-            //세션에 인증번호 넣기
+            
+            //인증번호 저장
             session.setAttribute("emailKey", randomNum);
-            session.setAttribute("user",user); // 변경해야함 , 비밀번호 암호화 필요
+            session.setAttribute("user",user);
+            session.setMaxInactiveInterval(60*10);
             return "redirect:/join/authentication.do";
         } catch (MessagingException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        model.addAttribute("user", user);
-        model.addAttribute("message", "오류가 발생했습니다.");
+        form.setMessage("오류가 발생했습니다.");
         return "/user/join";
     }
 
@@ -125,13 +132,24 @@ public class JoinController {
      *
      * @return string
      */
-    @GetMapping("/authentication.do")
+    @GetMapping("authentication.do")
     public String authentication(Model model){
         model.addAttribute("link", "/join/authentication.do");
+        model.addAttribute("resendLink", "'/join/resend/email'");
         return "/user/authentication";
     }
 
-    @PostMapping("/authentication.do")
+    /**
+     * description : 인증번호 인증 처리
+     * methodName : authenticationCheck
+     * author : Gong SuJeong
+     * date : 2022.06.07
+     *
+     * @param session
+     * @param userKey
+     * @return string
+     */
+    @PostMapping("authentication.do")
     public String authenticationCheck(HttpSession session, @RequestParam("emailKey") String userKey){
         String emailKey = String.valueOf(session.getAttribute("emailKey"));
         if (userKey.equals(emailKey)) {
@@ -141,6 +159,35 @@ public class JoinController {
         }
 
         return "redirect:/login/form.do";
+    }
+
+    /**
+     * description : 이메일 재전송
+     * methodName : sendEmail
+     * author : Gong SuJeong
+     * date : 2022.06.07
+     *
+     * @param session
+     * @return response entity
+     */
+    @ResponseBody
+    @PostMapping("resend/email")
+    public ResponseEntity<Boolean> sendEmail(HttpSession session){
+        User user = (User)session.getAttribute("user");
+        try {
+            String randomNum = userAuthService.sendEmailRandomNumber(user);
+
+            //인증번호 저장
+            session.setAttribute("emailKey", randomNum);
+            session.setAttribute("user",user);
+            session.setMaxInactiveInterval(60*10); // 시간 재설정
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

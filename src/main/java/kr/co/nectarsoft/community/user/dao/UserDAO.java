@@ -27,8 +27,8 @@ public interface UserDAO {
     int updateLoginDate(User user);
     int insertLoginLog(User user);
     int updateUser(User user);
-    List<User> selectUsersNotLogined(Map<String, String> map);
-    int updateWarnMail(User user);
-    int realDeleteUsers(String term);
-    int deleteUser(Map<String, String> map);
+    List<User> selectUsersNotLogined(Map<String, String> map); // 장기 미로그인 유저들
+    int updateWarnMail(User user); //장기 미 로그인 유저에게 메일 보냈는지 체크
+    int realDeleteUsers(String term); // 탈퇴유저 정보 삭제
+    int deleteUser(Map<String, String> map); // 유저 탈퇴
 }

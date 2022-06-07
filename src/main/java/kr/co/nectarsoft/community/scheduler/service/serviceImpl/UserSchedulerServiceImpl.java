@@ -62,7 +62,7 @@ public class UserSchedulerServiceImpl implements UserSchedulerService {
     public void deleteUserAfterOneMonth() {
         log.warn("탈퇴한 회원 삭제하기");
         //탈퇴한 회원중에 1개월이 된 회원 삭제
-        userDAO.realDeleteUsers(DELETE_TERM);
+//        userDAO.realDeleteUsers(DELETE_TERM);
     }
 
     @Override
@@ -71,6 +71,6 @@ public class UserSchedulerServiceImpl implements UserSchedulerService {
         Map<String, String> map = new HashMap<>();
         map.put("today", DateUtils.getNow("today"));
         map.put("term", DELETE_TERM);
-        userDAO.deleteUser(map);
+//        userDAO.deleteUser(map);
     }
 }

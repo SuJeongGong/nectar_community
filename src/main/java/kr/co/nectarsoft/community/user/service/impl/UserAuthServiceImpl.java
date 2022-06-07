@@ -1,6 +1,7 @@
 package kr.co.nectarsoft.community.user.service.impl;
 
 import kr.co.nectarsoft.community.common.utils.MailUtils;
+import kr.co.nectarsoft.community.common.utils.SHA256;
 import kr.co.nectarsoft.community.user.service.UserAuthService;
 import kr.co.nectarsoft.community.user.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * description    : 유저 인증 관련 서비스
@@ -26,20 +28,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Autowired
     private MailUtils sendMail;
+    @Autowired
+    private SHA256 sha256;
     @Value("${send.mail.address}") String sendMailAddress;
-    /**
-     * description : 랜덤 번호 생성
-     * methodName : newRandomNumber
-     * author : Gong SuJeong
-     * date :  2022.06.02
-     */
-    private String newRandomNumber() {
-        String randomNum = "";
-        for (int i = 0; i < 4; i++) {
-            randomNum += String.valueOf((int)Math.floor(Math.random() * 10));
-        }
-        return randomNum;
-    }
 
     @Override
     public String sendEmailRandomNumber(User user) throws MessagingException, UnsupportedEncodingException {
@@ -73,6 +64,27 @@ public class UserAuthServiceImpl implements UserAuthService {
         sendMail.send();
 
         return;
+    }
+
+    @Override
+    public String pwEncryption(String pw) throws NoSuchAlgorithmException {
+        if(pw == null || "".equals(pw)){
+            return "";
+        }
+        return sha256.encrypt(pw);
+    }
+    /**
+     * description : 랜덤 번호 생성
+     * methodName : newRandomNumber
+     * author : Gong SuJeong
+     * date :  2022.06.02
+     */
+    private String newRandomNumber() {
+        String randomNum = "";
+        for (int i = 0; i < 4; i++) {
+            randomNum += String.valueOf((int)Math.floor(Math.random() * 10));
+        }
+        return randomNum;
     }
 
 }
