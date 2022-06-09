@@ -39,9 +39,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void deleteUser(User user) {
-        user.setDeleteAt("T");
         user.setDeleteDate(DateUtils.getNow("dateTime"));
-        userDAO.updateUser(user);
+        userDAO.withdrawUser(user);
         return;
     }
 }

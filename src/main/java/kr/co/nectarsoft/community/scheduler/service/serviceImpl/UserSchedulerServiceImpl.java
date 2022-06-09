@@ -59,7 +59,7 @@ public class UserSchedulerServiceImpl implements UserSchedulerService {
             try {
                 userAuthService.sendEmailWarning(user);
                 user.setWarnMailDate(DateUtils.getNow("dateTime"));
-                userDAO.updateWarnMail(user);
+                userDAO.updateWarnMailNotLoginUser(user);
                 log.warn("[이메일 전송 성공] userId = {}, userEmail = {}, ", user.getId(), user.getEmail());
             } catch (Exception e) {
                 log.warn("[이메일 전송 실패] userId = {}, userEmail = {}, ", user.getId(), user.getEmail());
@@ -80,6 +80,6 @@ public class UserSchedulerServiceImpl implements UserSchedulerService {
         Map<String, String> map = new HashMap<>();
         map.put("deleteDate", DateUtils.getNow("dateTime"));
         map.put("date", DateUtils.calculateDate(-WITHDRAW_TERM_YEAR,-WITHDRAW_TERM_MONTH,-WITHDRAW_TERM_DAY) + "000000");
-        userDAO.withdrawUser(map);
+        userDAO.withdrawNotLoginUsers(map);
     }
 }

@@ -19,6 +19,9 @@
         <label for="id">인증번호</label>
         <input type="text" class="form-control form-control-lg" id="emailKey" name="emailKey" placeholder="인증번호">
     </div>
+    <div class="mt-3 text-info row col-12">
+        <div>남은시간 :</div><div id="time">11:00</div>
+    </div>
     <div class="mt-3">
         <button type="button" class="btn btn-block btn-light btn-lg font-weight-medium auth-form-btn" id="resend">재전송</button>
     </div>
@@ -27,7 +30,21 @@
     </div>
 </form>
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+    window.addEventListener('load', function () {
+        setInterval(finishTimeShow, 500);
+    })
+    /**
+     * 남은 시간 보여주기
+     */
+    function finishTimeShow(){
+        const finishTime = [[${#session.getMaxInactiveInterval()}]];
+        document.getElementById("time").textContent = (finishTime / 60) + ":" + ((finishTime % 60 < 10) ? "0"+finishTime % 60 : finishTime % 60);
+        console.log("실행중");
+        return;
+    }
+
+
     /**
      * 이메일 재전송
      */

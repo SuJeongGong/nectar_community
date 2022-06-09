@@ -87,18 +87,26 @@
         set name = '-',
             nickname = '탈퇴한 유저',
             pw = '-',
-            email = '-',
+            email = USER_EMAIL.nextval,
             last_logined ='-',
             phone = '-'
         where DELETE_AT = 'T'
             and  DELETE_DATE  &lt; #{date}
     </update>
 
-    <update id="withdrawUser" parameterType="map">
+    <update id="withdrawNotLoginUsers" parameterType="map">
         update "USER"
         set delete_at = 'T'
             , delete_date = #{deleteDate}
         where WARN_MAIL_DATE &lt; #{date}
+    </update>
+
+
+    <update id="withdrawUser" parameterType="User">
+        update "USER"
+        set delete_at = 'T'
+          , delete_date = #{deleteDate}
+        where id = #{id}
     </update>
 
 
@@ -110,16 +118,12 @@
                 <if test="pw != null and pw != ''">
                     , pw = #{pw}
                 </if>
-                <if test="deleteAt != null and deleteAt != ''">
-                    , delete_AT = #{deleteAt}
-                    , delete_Date = #{deleteDate}
-                </if>
                 <if test="email != null and email != ''">
                     ,email = #{email}
                 </if>
         where   id=#{id}
     </update>
-    <update id="updateWarnMail"  parameterType="User">
+    <update id="updateWarnMailNotLoginUser" parameterType="User">
         update "USER"
         set Warn_Mail_date = #{warnMailDate}
         where ID=#{id}

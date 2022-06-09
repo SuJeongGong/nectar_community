@@ -116,7 +116,7 @@ public interface UserDAO {
      * @param user warnMailDate : 메일전송날짜(UPDATE), id : UPDATE 할 유저
      * @return int
      */
-    int updateWarnMail(User user);
+    int updateWarnMailNotLoginUser(User user);
 
     /**
      * description : 탈퇴 유저 정보 삭제하기
@@ -139,5 +139,16 @@ public interface UserDAO {
      * @param map deleteDate : 탈퇴 날짜(UPDATE 할 날짜), date 메일 전송 날짜(비교)
      * @return int
      */
-    int withdrawUser(Map<String, String> map);
+    int withdrawNotLoginUsers(Map<String, String> map);
+
+    /**
+     * description : 회원탈퇴
+     * methodName : withdrawUser
+     * author : Gong SuJeong
+     * date : 2022.06.09
+     *
+     * @param user
+     * @return int
+     */
+    int withdrawUser(User user);
 }
