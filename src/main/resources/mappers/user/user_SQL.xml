@@ -49,15 +49,16 @@
                 'F')
     </insert>
 
-    <select id="selectUserById" parameterType="User" resultMap="userResultMap">
+    <select id="selectUserById" parameterType="string" resultMap="userResultMap">
         select *
         from "USER"
         where ID = #{id}
     </select>
 
-    <update id="updateLoginDate" parameterType="User">
+    <update id="updateLoginData" parameterType="User">
         update "USER"
         set last_logined = #{lastLoginDate}
+            ,WARN_MAIL_DATE = ''
         where id = #{id}
     </update>
 
@@ -73,30 +74,31 @@
     </insert>
 
 
-    <select id="selectUsersNotLogined" resultMap="userResultMap" parameterType="map">
+    <select id="selectUsersNotLogined" resultMap="userResultMap" parameterType="string">
         select *
         from "USER"
-        where TO_DATE (#{today} ,'YYYYMMDDHH24MISS') - TO_DATE(WARN_MAIL_DATE ,'YYYYMMDDHH24MISS') > #{term}
-            and WARN_MAIL_DATE = null
+        where LAST_LOGINED &lt; #{date}
+            and WARN_MAIL_DATE IS NULL
+            and delete_at = 'F'
     </select>
 
-    <update id="realDeleteUsers" parameterType="string">
+    <update id="deleteUsers" parameterType="string">
         update "USER"
-        set name = '',
+        set name = '-',
             nickname = '탈퇴한 유저',
-            pw = '',
-            email = '',
-            last_logined ='',
-            phone = ''
+            pw = '-',
+            email = '-',
+            last_logined ='-',
+            phone = '-'
         where DELETE_AT = 'T'
-            and  TO_DATE (#{today} ,'YYYYMMDDHH24MISS') - TO_DATE(WARN_MAIL_DATE ,'YYYYMMDDHH24MISS') > #{term}
+            and  DELETE_DATE  &lt; #{date}
     </update>
 
-    <update id="deleteUser" parameterType="User">
+    <update id="withdrawUser" parameterType="map">
         update "USER"
-        set delete_at = #{deleteAt}
-            and delete_date = #{deleteDate}
-        where id = #{id}
+        set delete_at = 'T'
+            , delete_date = #{deleteDate}
+        where WARN_MAIL_DATE &lt; #{date}
     </update>
 
 

@@ -31,14 +31,15 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public User login(User user) throws NoSuchAlgorithmException {
-        User selectUser = userDAO.selectUserById(user);
+        User selectUser = userDAO.selectUserById(user.getId());
         if ("T".equals(user.getDeleteAt())
                 || !sha256.encrypt(user.getPw()).equals(selectUser.getPw()) ) {
             return new User();
         }
 
         selectUser.setLastLoginDate(DateUtils.getNow("dateTime"));
-        userDAO.updateLoginDate(selectUser);
+        selectUser.setIp(user.getIp());
+        userDAO.updateLoginData(selectUser);
         userDAO.insertLoginLog(selectUser);
 
         return selectUser;

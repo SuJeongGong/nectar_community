@@ -3,7 +3,6 @@ package kr.co.nectarsoft.community.scheduler.jobDetail;
 import kr.co.nectarsoft.community.scheduler.service.UserSchedulerService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,7 +39,7 @@ public class UserSchedulerJobDetail implements Job {
 
         service.sendMailNotLoginedUser();
         service.deleteUserAfterOneMonth();
-        service.deleteUserAfterSendMail();
+        service.withdrawUserAfterSendMail();
         log.warn("schedule test~~ end");
     }
 

@@ -56,7 +56,6 @@ public class UserAuthServiceImpl implements UserAuthService {
         sendMail.setSubject("[NECTARSOFT] 커뮤니티 장기 미로그인 유저 탈퇴 경고 메일 입니다..\n"); //메일제목
         sendMail.setText(
                 "[회원가입 메일인증]" +
-                        "\n아래 [인증 코드]를 원래 페이지에 입력해주세요."+
                         "\n"+user.getName()+"님  안녕하세요. [NECTARSOFT] 커뮤니티 관리자 입니다." +
                         "\n[NECTARSOFT] 커뮤니티에 장기 미로그인 사용자로 한달 이내에 재 로그인을 하지 않으시면 회원 탈퇴가 진행됩니다.");
         sendMail.setFrom("0_sujeong@naver.com");       // 변경할 수 없으려나?!

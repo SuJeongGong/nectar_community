@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 
@@ -40,12 +41,10 @@ public class LoginConroller {
      * author : Gong SuJeong
      * date : 2022.06.03
      *
-     * @param model
      * @return string
      */
     @GetMapping("form.do")
-    public String loginForm(Model model){
-        model.addAttribute("user", new LoginForm());
+    public String loginForm(@ModelAttribute("user") LoginForm form){
         return "/user/login";
     }
 
@@ -61,7 +60,7 @@ public class LoginConroller {
      * @return string
      */
     @PostMapping("form.do")
-    public String login(@Validated @ModelAttribute("user") LoginForm form, BindingResult bindingResult, HttpSession session){
+    public String login(@Validated @ModelAttribute("user") LoginForm form, BindingResult bindingResult, HttpSession session, HttpServletRequest request){
         if (bindingResult.hasErrors()) {
             form.setMessage("오류가 발생했습니다.");
             return "/user/login";
@@ -70,6 +69,7 @@ public class LoginConroller {
         User user = new User();
         user.setId(form.getId());
         user.setPw(form.getPw());
+        user.setIp(request.getRemoteAddr());
         try {
             User loginUser = loginService.login(user);
             if (loginUser.getId()==null) {//service에서 체크 후 안맞으면 new User()리턴이라

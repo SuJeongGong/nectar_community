@@ -27,7 +27,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public User searchUserInfo(String userId) {
         User user = new User();
         user.setId(userId);
-        User selectUser = userDAO.selectUserById(user);
+        User selectUser = userDAO.selectUserById(user.getId());
         return selectUser;
     }
 

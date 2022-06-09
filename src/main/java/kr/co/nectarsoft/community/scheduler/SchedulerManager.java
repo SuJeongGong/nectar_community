@@ -42,11 +42,10 @@ public class SchedulerManager {
         dataMap.put("service", userSchedulerService);
 
         // job 지정
-        JobDetail job = JobBuilder.newJob(UserSchedulerJobDetail.class).setJobData(dataMap).withIdentity("testJob").build();
+        JobDetail job = JobBuilder.newJob(UserSchedulerJobDetail.class).setJobData(dataMap).withIdentity("UserJob").build();
 
-        // trigger 지정 - cron식으로
-        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 5 * * * ?")).build();
-//        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("* /1 * * * ?")).build();
+        // trigger 지정 - cron식으로 새벽 2시에 한번씩 실행되게
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ?")).build();
 
         scheduler.scheduleJob(job, trigger);
         scheduler.start();
