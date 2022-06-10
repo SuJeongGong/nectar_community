@@ -52,7 +52,7 @@ function checkAPI(searchType, searchData) {
 
 
 //이메일 전송
-function checkAPI(url) {
+function emailSendAPI(url) {
 
     fetch(url, {method:"post"})
         .then((response) => {
