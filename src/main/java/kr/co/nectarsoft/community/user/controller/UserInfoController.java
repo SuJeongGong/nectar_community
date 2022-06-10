@@ -51,9 +51,9 @@ public class UserInfoController {
      */
     @GetMapping("mypage.do")
     public String userInfo(HttpSession session, Model model){
-        if(session.getAttribute("userId") == null || "".equals(session.getAttribute("userId"))){
-            return "/";
-        }
+//        if(session.getAttribute("userId") == null || "".equals(session.getAttribute("userId"))){
+//            return "/";
+//        }
         User user = userInfoService.searchUserInfo(String.valueOf(session.getAttribute("userId")));
         model.addAttribute("user", user);
         return "/user/userInfo";

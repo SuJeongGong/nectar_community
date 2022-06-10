@@ -80,17 +80,7 @@
                         <img src="/template/images/faces/face28.jpg" alt="profile"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <th:block th:if="${#session.getAttribute('userId')} != null">
-                        <a class="dropdown-item" href="/user/mypage.do">
-                            <i class="ti-settings text-primary"></i>
-                            마이페이지
-                        </a>
-                        <a class="dropdown-item" href="/login/logout.do">
-                            <i class="ti-power-off text-primary"></i>
-                            로그아웃
-                        </a>
-                        </th:block>
-                        <th:block th:if="${#session.getAttribute('userId')} == null">
+                        <th:block th:if="${session['userId'] == null}">
                             <a class="dropdown-item" href="/join/form.do">
                                 <i class="ti-settings text-primary"></i>
                                 회원가입
@@ -99,6 +89,16 @@
                                 <i class="ti-power-off text-primary"></i>
                                 로그인
                             </a>
+                        </th:block>
+                        <th:block th:if="${session['userId'] != null}">
+                        <a class="dropdown-item" href="/user/mypage.do">
+                            <i class="ti-settings text-primary"></i>
+                            마이페이지
+                        </a>
+                        <a class="dropdown-item" href="/login/logout.do">
+                            <i class="ti-power-off text-primary"></i>
+                            로그아웃
+                        </a>
                         </th:block>
                     </div>
                 </li>

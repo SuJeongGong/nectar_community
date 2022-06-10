@@ -123,6 +123,7 @@
                 </if>
         where   id=#{id}
     </update>
+
     <update id="updateWarnMailNotLoginUser" parameterType="User">
         update "USER"
         set Warn_Mail_date = #{warnMailDate}
