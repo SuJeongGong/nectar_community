@@ -15,7 +15,9 @@
     <div class="badge  badge-warning">필수</div>
     표시 되어있는건 필수 정보입니다.
 </h6>
-<form class="pt-3" action="/join/form.do" method="post" th:object="${user}" th:onsubmit="return checkForm()">
+<form class="pt-3"  method="post" th:object="${user}" th:onsubmit="return checkForm()"
+
+      th:action="@{/join/form.do(redirectURL=${param.get('redirectURL')})}" >
     <div class="form-group">
         <label for="id">
             <div class="badge  badge-warning">필수</div>
@@ -79,7 +81,7 @@
 </form>
 <!-- container-scroller -->
 <!-- Custom js for this page-->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     const messageText = [[${user.message}]];
     if(messageText!=null && messageText !=''){
         alert(messageText);

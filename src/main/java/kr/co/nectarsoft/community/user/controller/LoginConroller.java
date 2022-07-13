@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,7 +57,9 @@ public class LoginConroller {
      * @return string
      */
     @PostMapping("form.do")
-    public String login(@Validated @ModelAttribute("user") LoginForm form, BindingResult bindingResult, HttpSession session, HttpServletRequest request){
+    public String login(@Validated @ModelAttribute("user") LoginForm form, BindingResult bindingResult
+            , HttpSession session, HttpServletRequest request, @RequestParam(value = "redirectURL", defaultValue = "/") String redirectURL){
+        //TODO redirectURL 변수명 const로 관리하기, redirectURL 값이 제대로 안들어옴 확인하기
         if (bindingResult.hasErrors()) {
             form.setMessage("오류가 발생했습니다.");
             return "/user/login";
@@ -82,7 +81,7 @@ public class LoginConroller {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return "redirect:/";
+        return "redirect:" + redirectURL;
     }
 
     /**
